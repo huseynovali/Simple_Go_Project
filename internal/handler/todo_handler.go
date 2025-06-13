@@ -89,3 +89,56 @@ func UpdateTodo(c *gin.Context) {
 
 	c.JSON(http.StatusOK, todo)
 }
+
+func DeleteTodo(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
+		return
+	}
+
+	uintID, err := strconv.ParseUint(id, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+		return
+	}
+
+	todo, err := service.GetTodoByID(uint(uintID))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Todo not found"})
+		return
+	}
+
+	if err := service.UpdateTodo(todo); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete todo"})
+		return
+	}
+
+	c.JSON(http.StatusNoContent, nil)
+}
+
+func ToggleTodoCompletion(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
+		return
+	}
+
+	uintID, err := strconv.ParseUint(id, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+		return
+	}
+
+	todo, err := service.GetTodoByID(uint(uintID))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Todo not found"})
+		return
+	}
+	todo.Completed = !todo.Completed
+	if err := service.UpdateTodo(todo); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to toggle todo completion"})
+		return
+	}
+	c.JSON(http.StatusOK, todo)
+}
