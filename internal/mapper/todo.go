@@ -1,4 +1,3 @@
-// internal/mapper/todo_mapper.go
 package mapper
 
 import (

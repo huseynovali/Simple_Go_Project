@@ -19,8 +19,9 @@ func UpdateTodo(todo *model.Todo) error {
 	return db.DB.Save(todo).Error
 }
 
-func GetTodoByID(id uint) (*model.Todo, error) {
+func GetTodoByID(id string) (*model.Todo, error) {
 	var todo model.Todo
+
 	result := db.DB.First(&todo, "id = ?", id) // For primary key lookup
 	if result.Error != nil {
 		return nil, result.Error

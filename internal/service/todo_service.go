@@ -5,6 +5,7 @@ import (
 	"todo-app/internal/mapper"
 	"todo-app/internal/model"
 	"todo-app/internal/repository"
+
 )
 
 func GetTodos() ([]response.TodoResponse, error) {
@@ -26,12 +27,18 @@ func AddTodo(todo *model.Todo) error {
 	return repository.CreateTodo(todo)
 }
 
-func GetTodoByID(id uint) (*model.Todo, error) {
+func GetTodoByID(id string) (response.TodoResponse, error) {
 	todo, err := repository.GetTodoByID(id)
 	if err != nil {
-		return nil, err
+		return response.TodoResponse{}, err
 	}
-	return todo, nil
+
+   var todoResponse response.TodoResponse
+	todoResponse = mapper.ToTodoResponse(*todo)
+
+
+
+	return todoResponse, nil
 }
 
 func UpdateTodo(todo *model.Todo) error {
