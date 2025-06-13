@@ -8,6 +8,6 @@ type Config struct {
 
 func LoadConfig() *Config {
 	return &Config{
-		DBUrl: os.Getenv("DATABASE_URL"),
+		DBUrl: os.Getenv("DATABASE_URL"), // sadəcə dəyişən adı
 	}
 }
