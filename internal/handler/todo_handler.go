@@ -89,7 +89,6 @@ func DeleteTodo(c *gin.Context) {
 		return
 	}
 
-
 	c.JSON(http.StatusNoContent, nil)
 }
 
@@ -105,7 +104,7 @@ func ToggleTodoCompletion(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Todo not found"})
 		return
 	}
-	
+
 	// Convert response.TodoResponse to model.Todo
 	modelTodo := &model.Todo{
 		ID:        todo.ID,
@@ -113,7 +112,7 @@ func ToggleTodoCompletion(c *gin.Context) {
 		Completed: !todo.Completed,
 		// Add any other fields that model.Todo requires
 	}
-	
+
 	if err := service.UpdateTodo(modelTodo); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to toggle todo completion"})
 		return

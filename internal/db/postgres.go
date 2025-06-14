@@ -4,7 +4,6 @@ import (
 	"log"
 	"todo-app/config"
 	"todo-app/internal/model"
-
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -18,7 +17,7 @@ func InitPostgres(cfg *config.Config) {
 		log.Fatal("Failed to connect database:", err)
 	}
 
-	err = DB.AutoMigrate(&model.Todo{})
+	err = DB.AutoMigrate(&model.User{},&model.Todo{})
 	if err != nil {
 		log.Fatal("Failed to migrate:", err)
 	}
